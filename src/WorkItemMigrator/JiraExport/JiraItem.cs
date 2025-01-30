@@ -388,7 +388,8 @@ namespace JiraExport
                 Logger.Log(LogLevel.Error, $"Link change not handled!");
                 return null;
             }
-            var linkType = jira.GetLinkType(linkTypeString, targetItemKey);
+            bool inward = false;
+            var linkType = jira.GetLinkType(linkTypeString, targetItemKey, out inward);
             if (linkType == null)
             {
                 Logger.Log(LogLevel.Debug, $"Link with description '{linkTypeString}' is either not found or this issue ({sourceItemKey}) is not inward issue.");
@@ -396,12 +397,6 @@ namespace JiraExport
             }
             else
             {
-                if (linkType.Inward == linkType.Outward && sourceItemKey.CompareTo(targetItemKey) < 0)
-                {
-                    Logger.Log(LogLevel.Debug, $"Link is non-directional ({linkType.Name}) and sourceItem ({sourceItemKey}) is older then target item ({targetItemKey}). Link change will be part of target item.");
-                    return null;
-                }
-
                 return new RevisionAction<JiraLink>()
                 {
                     ChangeType = changeType,
@@ -410,6 +405,7 @@ namespace JiraExport
                         SourceItem = sourceItemKey,
                         TargetItem = targetItemKey,
                         LinkType = linkType.Name,
+                        IsInwardLink = inward
                     }
                 };
             }

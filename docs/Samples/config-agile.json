@@ -39,6 +39,10 @@
         "target": "System.LinkTypes.Related"
       },
       {
+        "source": "Cloners",
+        "target": "System.LinkTypes.Related"
+      },
+      {
         "source": "Duplicate",
         "target": "System.LinkTypes.Duplicate-Forward"
       }
@@ -143,10 +147,6 @@
             {
               "source": "In Progress",
               "target": "Active"
-            },
-            {
-              "source": "Done",
-              "target": "Resolved"
             },
             {
               "source": "Done",
